@@ -36,6 +36,7 @@
 </template>
 
 <script>
+
 const getVueCacheData = vue => {
   let cacheList = [
     "showPullingUp",
@@ -218,6 +219,8 @@ export default {
         this.refreshing = true;
         this.state = 3;
         this.transition = "all 0.2s";
+        console.log(this)
+        console.log('emit:'+this.$emit)
         this.$emit("onRefresh");
       } else {
         this.state = 1;

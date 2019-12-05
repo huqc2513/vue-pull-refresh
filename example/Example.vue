@@ -2,7 +2,7 @@
   <div class='box'>
     <pull-refresh :list.sync="list"
                   ref="scroll"
-                  @onRefresh="onRefresh"
+                  v-on:refresh="onRefresh"
                   @pullUpLoad="pullUpLoad">
       <div class="list">
         <ul>
