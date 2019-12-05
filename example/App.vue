@@ -1,11 +1,11 @@
 <template>
-    <div id="app">
+    <div id="app" >
         <Example/>
     </div>
 </template>
 
 <script>
-import Example from './components/Example'
+import Example from './Example.vue'
 
 export default {
     name: 'App',
@@ -15,7 +15,7 @@ export default {
 }
 </script>
 
-<style>
+<style  lang='scss'>
     html, body {
         margin: 0;
         padding: 0;

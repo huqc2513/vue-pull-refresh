@@ -63,10 +63,8 @@ export default {
 };
 </script>
 
-<style scoped>
-ul {
-  margin-top: 0;
-}
+<style lang='scss' scoped>
+
 button {
   border: 0;
   background-color: #ff4f4f;

@@ -1,34 +1,28 @@
 <template>
-  <div class="pull-refresh"
-       ref="pullF">
-    <div class="pull-info"
-         :style="{ height: tipHeight }"
-         v-if="!refreshing">
-      <img src="../img/refresh_arrow.png"
-           :style="{ transform: `rotate(${arrowDeg}deg)`, transition: transition }" />
+  <div class="pull-refresh" ref="pullF">
+    <div class="pull-info" :style="{ height: tipHeight }" v-if="!refreshing">
+      <img
+        :src="refresh_arrowImg"
+        :style="{ transform: `rotate(${arrowDeg}deg)`, transition: transition }"
+      />
       <span>{{ tipText }}</span>
     </div>
-    <div class="pull-info"
-         :style="{ height: tipHeight }"
-         v-else>
-      <img v-if="state === 3"
-           src="../img/loading.gif" />
-      <img v-if="state === 4"
-           src="../img/succ.png" />
+    <div class="pull-info" :style="{ height: tipHeight }" v-else>
+      <img v-if="state === 3" :src="loadingImg" />
+      <img v-if="state === 4" :src="succImg" />
       <span>{{ refreshTip }}</span>
     </div>
-    <div class="pull-con"
-         ref="pull"
-         @touchstart="touchstart"
-         @touchmove="touchmove"
-         @touchend="touchend"
-         :style="{ transform: `translateY(${moveY}px)`, transition: transition }">
+    <div
+      class="pull-con"
+      ref="pull"
+      @touchstart="touchstart"
+      @touchmove="touchmove"
+      @touchend="touchend"
+      :style="{ transform: `translateY(${moveY}px)`, transition: transition }"
+    >
       <slot></slot>
-      <div class="pullingUp-wrap"
-           v-if="pullingUp && showPullingUp">
-        <img v-if="!pullingUpStaus"
-             class="img"
-             src="../img/loading.gif" />
+      <div class="pullingUp-wrap" v-if="pullingUp && showPullingUp">
+        <img v-if="!pullingUpStaus" class="img" :src="loadingImg" />
         {{ pullingUpTipText }}
       </div>
     </div>
@@ -97,6 +91,9 @@ export default {
   },
   data() {
     return {
+      loadingImg: require("./img/loading.gif"),
+      refresh_arrowImg: require("./img/refresh_arrow.png"),
+      succImg: require("./img/succ.png"),
       refreshing: false,
       state: 1,
       clientY: 0,
@@ -321,13 +318,10 @@ export default {
     }
   }
 };
+
 </script>
 
-<style scoped>
-.pull-refresh {
-  position: relative;
-  overflow-y: auto;
-}
+<style lang='scss' scoped>
 .pull-refresh::-webkit-scrollbar {
   display: none;
 }
@@ -336,11 +330,8 @@ export default {
 }
 .pull-info {
   display: flex;
-  display: -webkit-flex;
   justify-content: center;
-  -webkit-justify-content: center;
   align-items: center;
-  -webkit-align-items: center;
   position: absolute;
   top: 0;
   width: 100%;

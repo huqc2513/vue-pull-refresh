@@ -1,10 +1,16 @@
 import pullRefresh from './pullRefresh.vue'
 
-pullRefresh.install = function (Vue) {
+const install = function (Vue,options) {
   Vue.component('pull-refresh', pullRefresh)
 }
 
-if (window.Vue) {
-  window.Vue && window.vue.use(pullRefresh)
+// 同样，Vue 作为全局变量时自动 install
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(pullRefresh)
 }
-export default pullRefresh
+
+  
+export default {
+  install,
+  pullRefresh
+}
