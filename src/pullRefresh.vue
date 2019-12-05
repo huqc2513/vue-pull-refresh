@@ -1,28 +1,34 @@
 <template>
-  <div class="pull-refresh" ref="pullF">
-    <div class="pull-info" :style="{ height: tipHeight }" v-if="!refreshing">
-      <img
-        :src="refresh_arrowImg"
-        :style="{ transform: `rotate(${arrowDeg}deg)`, transition: transition }"
-      />
+  <div class="pull-refresh"
+       ref="pullF">
+    <div class="pull-info"
+         :style="{ height: tipHeight }"
+         v-if="!refreshing">
+      <img :src="refresh_arrowImg"
+           :style="{ transform: `rotate(${arrowDeg}deg)`, transition: transition }" />
       <span>{{ tipText }}</span>
     </div>
-    <div class="pull-info" :style="{ height: tipHeight }" v-else>
-      <img v-if="state === 3" :src="loadingImg" />
-      <img v-if="state === 4" :src="succImg" />
+    <div class="pull-info"
+         :style="{ height: tipHeight }"
+         v-else>
+      <img v-if="state === 3"
+           :src="loadingImg" />
+      <img v-if="state === 4"
+           src="./img/succ.png" />
       <span>{{ refreshTip }}</span>
     </div>
-    <div
-      class="pull-con"
-      ref="pull"
-      @touchstart="touchstart"
-      @touchmove="touchmove"
-      @touchend="touchend"
-      :style="{ transform: `translateY(${moveY}px)`, transition: transition }"
-    >
+    <div class="pull-con"
+         ref="pull"
+         @touchstart="touchstart"
+         @touchmove="touchmove"
+         @touchend="touchend"
+         :style="{ transform: `translateY(${moveY}px)`, transition: transition }">
       <slot></slot>
-      <div class="pullingUp-wrap" v-if="pullingUp && showPullingUp">
-        <img v-if="!pullingUpStaus" class="img" :src="loadingImg" />
+      <div class="pullingUp-wrap"
+           v-if="pullingUp && showPullingUp">
+        <img v-if="!pullingUpStaus"
+             class="img"
+             :src="loadingImg" />
         {{ pullingUpTipText }}
       </div>
     </div>
@@ -43,6 +49,9 @@ const getVueCacheData = vue => {
   });
   return obj;
 };
+
+let test =require("./img/loading.gif")
+console.log('test',test)
 
 export default {
   name: "pullRefresh",
@@ -176,7 +185,8 @@ export default {
       try {
         let parent = this.$refs.pullF.parentNode;
         let h = parent.clientHeight;
-        this.$refs.pullF.style = `height:${h}px`;
+        let w = parent.clientWidth;
+        this.$refs.pullF.style = `height:${h}px;width:${w}px`;
       } catch (e) {
         console.log(e);
       }
@@ -325,25 +335,32 @@ export default {
 .pull-refresh::-webkit-scrollbar {
   display: none;
 }
-.pull-con {
-  height: 100%;
+.pull-refresh {
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  .pull-con {
+    height: 100%;
+  }
 }
+
 .pull-info {
   display: flex;
+  width: 100%;
   justify-content: center;
   align-items: center;
   position: absolute;
   top: 0;
-  width: 100%;
-}
-.pull-info img {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-}
-.pull-info span {
-  color: #333333;
-  font-size: 14px;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  span {
+    color: #333333;
+    font-size: 14px;
+  }
 }
 
 .pullingUp-wrap {

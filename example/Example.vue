@@ -64,7 +64,6 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-
 button {
   border: 0;
   background-color: #ff4f4f;
@@ -77,5 +76,11 @@ button {
   width: 100%;
   background-color: white;
   overflow: hidden;
+  li {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    justify-content: center;
+  }
 }
 </style>
