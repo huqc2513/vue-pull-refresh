@@ -1,4 +1,5 @@
 import pullRefresh from './pullRefresh.vue'
+
 const install = function (Vue, options) {
   Vue.component('pull-refresh', pullRefresh)
 }

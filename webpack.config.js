@@ -1,11 +1,13 @@
 const path = require("path");
 const webpack = require("webpack");
 const uglify = require("uglifyjs-webpack-plugin");
-const { VueLoaderPlugin } = require("vue-loader");
+const {
+  VueLoaderPlugin
+} = require("vue-loader");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const isdev = process.env.NODE_ENV === "development";
-console.log("isdev", isdev, process.env.NODE_ENV);
+console.log("isdev", process.env.NODE_ENV);
 
 const config = {
   mode: "development",
@@ -26,8 +28,7 @@ const config = {
     extensions: [".js", ".vue", ".less", ".css", ".scss"]
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.vue$/,
         loader: "vue-loader"
       },
@@ -37,8 +38,7 @@ const config = {
       },
       {
         test: /\.scss$/,
-        use: [
-          {
+        use: [{
             loader: "style-loader"
           },
           {
@@ -84,6 +84,7 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       inject: "body",
+      env: isdev,
       template: path.resolve(__dirname, "./example/index.html")
     })
     // new webpack.optimize.UglifyJsPlugin({

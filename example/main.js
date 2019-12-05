@@ -6,7 +6,6 @@ Vue.use(pullRefresh);
 
 import "./reset.css";
 
-/* eslint-disable no-new */
 new Vue({
   el: "#app",
   components: {

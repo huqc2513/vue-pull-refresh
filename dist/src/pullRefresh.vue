@@ -4,7 +4,7 @@
     <div class="pull-info"
          :style="{ height: tipHeight }"
          v-if="!refreshing">
-      <img src="./img/refresh_arrow.png"
+      <img :src="refresh_arrowImg"
            :style="{ transform: `rotate(${arrowDeg}deg)`, transition: transition }" />
       <span>{{ tipText }}</span>
     </div>
@@ -28,7 +28,7 @@
            v-if="pullingUp && showPullingUp">
         <img v-if="!pullingUpStaus"
              class="img"
-             src="./img/loading.gif" />
+             :src="loadingImg" />
         {{ pullingUpTipText }}
       </div>
     </div>
@@ -50,6 +50,8 @@ const getVueCacheData = vue => {
   return obj;
 };
 
+let test =require("./img/loading.gif")
+console.log('test',test)
 
 export default {
   name: "pullRefresh",
@@ -325,8 +327,7 @@ export default {
       this.getCacheData();
     }
   }
-}
-
+};
 
 </script>
 
@@ -337,26 +338,20 @@ export default {
 .pull-refresh {
   position: relative;
   width: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
   overflow-y: scroll;
   .pull-con {
     height: 100%;
-    z-index: 99;
-    position: absolute;
-    width: 100%;
-    background: #fff;
   }
 }
 
 .pull-info {
   display: flex;
   width: 100%;
-  text-align: center;
   justify-content: center;
   align-items: center;
   position: absolute;
   top: 0;
-  z-index: 1;
   img {
     width: 20px;
     height: 20px;

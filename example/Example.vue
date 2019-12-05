@@ -16,7 +16,6 @@
 </template>
 
 <script>
-// import pullRefresh from "@/components/pullRefresh.vue";
 export default {
   name: "Example",
   data() {
@@ -58,7 +57,6 @@ export default {
     }
   },
   components: {
-    // pullRefresh
   }
 };
 </script>
