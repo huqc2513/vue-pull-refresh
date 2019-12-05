@@ -28,7 +28,8 @@
 <body>
   <div id='app'>
     <div class="box">
-      <pull-refresh :list.sync="list" ref="scroll" @onRefresh="onRefresh" pull-height="400px" @pullUpLoad="pullUpLoad">
+      <pull-refresh :list.sync="list" ref="scroll" @on-refresh="on-refresh" pull-height="400px"
+        @pull-upLoad="pull-upLoad">
         <ul>
           <li v-for="i in list">{{i}}</li>
         </ul>
@@ -37,7 +38,6 @@
   </div>
   <script type="text/javascript" src="vue-pull-refresh.min.js"></script>
 </body>
-
 
 
 <script>
@@ -78,7 +78,7 @@
         this.isRefreshing = true;
         setTimeout(() => {
           this.isRefreshing = false;
-        }, 1000);
+        }, 1000)
       }
     }
   });

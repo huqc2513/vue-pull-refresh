@@ -1,13 +1,10 @@
 const path = require("path");
 const webpack = require("webpack");
 const uglify = require("uglifyjs-webpack-plugin");
-const {
-  VueLoaderPlugin
-} = require("vue-loader");
+const { VueLoaderPlugin } = require("vue-loader");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const isdev = process.env.NODE_ENV === "development";
-console.log("isdev", process.env.NODE_ENV);
 
 const config = {
   mode: "development",
@@ -15,7 +12,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, "./dist"),
     // publicPath: '/dist/',
-    filename: "vue-pull-refresh.min.js",
+    filename: "index.js",
     libraryTarget: "umd",
     library: "vpull",
     // 　libraryTarget：为了支持多种使用场景，我们需要选择合适的打包格式。libraryTarget 属性。这是可以控制 library 如何以不同方式暴露的选项。
@@ -28,7 +25,8 @@ const config = {
     extensions: [".js", ".vue", ".less", ".css", ".scss"]
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.vue$/,
         loader: "vue-loader"
       },
@@ -38,7 +36,8 @@ const config = {
       },
       {
         test: /\.scss$/,
-        use: [{
+        use: [
+          {
             loader: "style-loader"
           },
           {
@@ -112,4 +111,5 @@ if (isdev) {
     open: true
   };
 }
+
 module.exports = config;

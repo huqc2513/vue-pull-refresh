@@ -1,8 +1,13 @@
 {
   "name": "v-pull-refresh",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "1.0.1",
+  "description": "一个基于vue的上下拉加载插件",
+  "main": "dist/index.js",
+  "author": "huqc <593989124@qq.com>",
+  "keywords": [
+    "Vue2"
+  ],
+  "private": false,
   "directories": {
     "example": "example"
   },
@@ -11,7 +16,6 @@
     "start": "npm run dev",
     "build": "webpack --mode production --config webpack.config.js"
   },
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.7.4",
