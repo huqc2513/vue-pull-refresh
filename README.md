@@ -16,12 +16,15 @@
 
 #### 示例
 
-使用`pull-refresh`组件的外层父容器，必须要指定高度，使其内部子元素继承，子元素高度超出才能进行上拉滚动加载
-
 ```js
 <template>
-  <div style='height:400px;border:1px solid red;'>
-    <pull-refresh :refreshing="isRefreshing" :on-refresh="onRefresh" >
+  <div style='height:400px;border:1px solid black;'>
+    <pull-refresh
+                  :list.sync="list"
+                  ref="scroll"
+                  @onRefresh="onRefresh"
+                  @pullUpLoad="pullUpLoad"
+    >
       <div class="list">
             <ul>
               <li v-for="(n, i) in list"
@@ -56,6 +59,7 @@
     pullUpLoad(i) {
       console.log("加载", i);
       if (i >= 3) {
+        //数据上拉加载完成后，显示调用此方法后，滚动到底部将不会再派发此事件
         this.$refs.scroll && this.$refs.scroll.pullUpLoadFinish();
         return;
       }
@@ -88,18 +92,22 @@
 </style>
 ```
 
+使用`pull-refresh`组件的外层父容器，必须要指定高度，使其内部子元素继承，子元素高度超出才能进行上拉滚动加载
+
 注意：
 
-只要改变了 list 的长度，组件内会 watch 监听 list 变化，将刷新状态重置
+只要改变了 list 的长度，组件内会 watch 监听 list 变化，将刷新状态重置,上拉刷新后，若无数据需要显式调用组件的`pullUpLoadFinish`方法
 
-#### API
+#### prop
 
 | 属性       | 说明             | 类型    | 默认值         | 描述                                                                 |
 | ---------- | ---------------- | ------- | -------------- | -------------------------------------------------------------------- |
-| list       | 数组列表         | array   | `[]`           |
+| list       | 数组列表         | array   |                |
 | pullTip    | 下拉时的提示文字 | string  | `下拉即可刷新` |
 | refreshTip | 刷新中的提示文字 | string  | `正在刷新`     |
 | usecache   | 是否开启缓存     | Boolean | false          | `开启缓存后，会将list数据以及刷新状态，滚动条高度等进行缓存(待实现)` |
+
+#### emit-event
 
 | 事件方法   | 说明                       | 参数                 |
 | ---------- | -------------------------- | -------------------- |
