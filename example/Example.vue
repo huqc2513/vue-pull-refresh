@@ -62,14 +62,6 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-button {
-  border: 0;
-  background-color: #ff4f4f;
-  color: white;
-  padding: 5px 10px;
-  display: block;
-  margin: 20px auto;
-}
 .list {
   width: 100%;
   background-color: white;

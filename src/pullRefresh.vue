@@ -58,14 +58,6 @@ export default {
       type: Array,
       default: () => []
     },
-    // refreshing: {
-    //   type: Boolean,
-    //   default: false
-    // },
-    // onRefresh: {
-    //   type: Function,
-    //   default: function() {}
-    // },
     tipHeight: {
       type: String,
       default: "50px"
@@ -98,9 +90,6 @@ export default {
   },
   data() {
     return {
-      loadingImg: require("./img/loading.gif"),
-      refresh_arrowImg: require("./img/refresh_arrow.png"),
-      succImg: require("./img/succ.png"),
       refreshing: false,
       state: 1,
       clientY: 0,
@@ -326,7 +315,6 @@ export default {
     }
   }
 }
-
 
 </script>
 

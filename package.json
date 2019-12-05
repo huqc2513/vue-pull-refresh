@@ -1,6 +1,6 @@
 {
   "name": "v-pull-refresh",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "一个基于vue的上下拉加载插件",
   "main": "dist/index.js",
   "author": "huqc <593989124@qq.com>",
@@ -36,5 +36,8 @@
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
+  },
+  "dependencies": {
+    "v-pull-refresh": "^1.0.3"
   }
 }
