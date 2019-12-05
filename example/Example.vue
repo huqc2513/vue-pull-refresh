@@ -1,9 +1,8 @@
 <template>
-  <div style='height:400px;border:1px solid red;'>
+  <div class='box'>
     <pull-refresh :list.sync="list"
                   ref="scroll"
                   @onRefresh="onRefresh"
-                  pull-height="400px"
                   @pullUpLoad="pullUpLoad">
       <div class="list">
         <ul>
@@ -16,6 +15,8 @@
 </template>
 
 <script>
+// import pullRefresh from "v-pull-refresh";
+
 export default {
   name: "Example",
   data() {
@@ -35,8 +36,8 @@ export default {
       }, 1000);
     },
     pullUpLoad(i) {
-      console.log("加载", i);
-      if (i >= 3) {
+      console.log("加载pgaeIndex", i);
+      if (i >= 10) {
         this.$refs.scroll && this.$refs.scroll.pullUpLoadFinish();
         return;
       }
@@ -48,15 +49,10 @@ export default {
       setTimeout(() => {
         this.list = this.list.concat(arr);
       }, 1000);
-    },
-    open() {
-      this.isRefreshing = true;
-      setTimeout(() => {
-        this.isRefreshing = false;
-      }, 1000);
     }
   },
   components: {
+  //  pullRefresh
   }
 };
 </script>
@@ -72,5 +68,11 @@ export default {
     margin: 10px 0;
     justify-content: center;
   }
+}
+.box {
+  height: 400px;
+  width: 300px;
+  margin: 0 auto;
+  border: 1px solid block;
 }
 </style>

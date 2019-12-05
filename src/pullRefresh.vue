@@ -12,7 +12,7 @@
          :style="{ height: tipHeight }"
          v-else>
       <img v-if="state === 3"
-           :src="loadingImg" />
+           src="./img/loading.gif" />
       <img v-if="state === 4"
            src="./img/succ.png" />
       <span>{{ refreshTip }}</span>
@@ -104,7 +104,7 @@ export default {
       pullingUpText: "正在加载",
       pullingUpStaus: false,
       upllingUpState: 1
-    };
+    }
   },
   mounted() {
     this.setWrapHeight();
