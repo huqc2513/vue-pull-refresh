@@ -4,7 +4,7 @@
 
 ## 在线demo
 
-[点击查看](https://huqc2513.github.io/component/#/tab)(请使用浏览器手机模拟器模式查看) 
+[点击查看](https://huqc.gitee.io/vue-pull/)(请使用浏览器手机模拟器模式查看) 
 
 
 
