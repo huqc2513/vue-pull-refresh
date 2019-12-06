@@ -61,7 +61,7 @@
       loadMore(i) {
         console.log("加载", i);
         if (i >= 3) {
-          this.$refs.scroll && this.$refs.scroll.pullUpLoadFinish();
+          this.$refs.scroll && this.$refs.scroll.forceUpdate();
           return;
         }
         let arr = [],

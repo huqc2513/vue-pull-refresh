@@ -6,7 +6,6 @@ import pullRefresh from '../src/index';
 Vue.use (pullRefresh);
 
 import './reset.css';
-
 new Vue ({
   el: '#app',
   components: {

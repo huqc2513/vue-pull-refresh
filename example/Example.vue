@@ -3,8 +3,8 @@
     <pull-refresh
       :list.sync="list"
       ref="scroll"
-      @refresh="onRefresh"
-      @loadmore="pullUpLoad"
+      @refresh="refresh"
+      @loadmore="loadmore"
     >
       <div class="list">
         <ul>
@@ -25,7 +25,7 @@ export default {
     };
   },
   methods: {
-    onRefresh() {
+    refresh() {
       let arr = [],
         len = this.list.length;
       for (let i = len; i < len + 10; i++) {
@@ -35,10 +35,10 @@ export default {
         this.list = this.list.concat(arr);
       }, 1000);
     },
-    pullUpLoad(i) {
+    loadmore(i) {
       console.log("加载pageIndex", i);
       if (i >= 4) {
-        this.$refs.scroll && this.$refs.scroll.pullUpLoadFinish();
+        this.$refs.scroll && this.$refs.scroll.forceUpdate();
         return;
       }
       let arr = [],

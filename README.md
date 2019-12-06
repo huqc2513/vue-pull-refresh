@@ -27,8 +27,8 @@
     <pull-refresh
                   :list.sync="list"
                   ref="scroll"
-                  @onRefresh="onRefresh"
-                  @pullUpLoad="pullUpLoad"
+                  @refresh="onRefresh"
+                  @loadmore="loadmore"
     >
       <div class="list">
             <ul>
@@ -42,9 +42,7 @@
 </template>
 
 <script>
-
  export default {
-  name: "Example",
   data() {
     return {
       list: [1, 2, 3, 4, 5]
@@ -61,11 +59,11 @@
         this.list = this.list.concat(arr);
       }, 1000);
     },
-    pullUpLoad(i) {
-      console.log("加载", i);
+    loadmore(pageindex) {
+      console.log("加载pageindex", pageindex);
       if (i >= 3) {
-        //数据上拉加载完成后，显示调用此方法后，滚动到底部将不会再派发此事件
-        this.$refs.scroll && this.$refs.scroll.pullUpLoadFinish();
+        //数据上拉加载完成后，显示调用此方法后，滚动到底部将不会再派发
+        this.$refs.scroll && this.$refs.scroll.forceUpdate();
         return;
       }
       let arr = [],
@@ -97,27 +95,37 @@
 </style>
 ```
 
-使用`pull-refresh`组件的外层父容器，必须要指定高度，使其内部子元素继承，子元素高度超出才能进行上拉滚动加载
+**使用`pull-refresh`组件的外层父容器，必须要指定高度，使其内部子元素继承，子元素高度超出才能进行上拉滚动加载**
 
-注意：
 
-只要改变了 list 的长度，组件内会 watch 监听 list 变化，将刷新状态重置,上拉刷新后，若无数据需要显式调用组件的`pullUpLoadFinish`方法
+>在使用上拉刷新时，只要改变了 list 的长度，组件内会 watch 监听 list 变化，将刷新状态重置,在上拉刷新后若无数据需要显式调用组件的`forceUpdate`方法通知组件内部
 
 ## prop
 
 | 属性       | 说明             | 类型    | 默认值         | 描述                                                                 |
 | ---------- | ---------------- | ------- | -------------- | -------------------------------------------------------------------- |
-| list       | 数组列表         | array   |                |
-| pullTip    | 下拉时的提示文字 | string  | `下拉即可刷新` |
-| refreshTip | 刷新中的提示文字 | string  | `正在刷新`     |
-| usecache   | 是否开启缓存     | Boolean | false          | `开启缓存后，会将list数据以及刷新状态，滚动条高度等进行缓存(待实现)` |
+| list       | `数组列表`         | array   |    []         |   `异步的数据列表，内部` |
+| pullTip    | `下拉时的提示文字` | string   | `下拉即可刷新` |
+| pullingUp  | `是否开启上拉刷新` | Boolean  |  true         |
+| pullingDown| `是否开启下拉刷新` | Boolean  |  true         |
+| refreshTip | `刷新中的提示文字` | string   |   `正在刷新`   |
+| usecache   | `是否开启缓存`     | Boolean  |     false    | `开启缓存后，会将list数据以及刷新状态，滚动条高度等进行缓存(待实现)` |
+
+ 
 
 ## emit-event
 
 | 事件方法   | 说明                       | 参数                 |
 | ---------- | -------------------------- | -------------------- |
-| onRefresh  | 下拉刷新成功后，触发此事件 | `无`                 |
-| pullUpLoad | 上拉刷新成功后，触发此事件 | `pageIndex` (nubmer) |
+| refresh  | `下拉刷新成功后，触发此事件` | `无`                 |
+| loadmore | `上拉刷新成功后，触发此事件` | `pageIndex` (nubmer) |
+
+## 实例事件
+
+| 事件方法   | 说明                       |
+| ----------   | ----------------------- |
+| forceUpdate  | `上拉刷新成功后，如list数组没有数据，应调用此方法，组件将不再派发滚动到底部事件`  |
+
 
 ## 其他
 

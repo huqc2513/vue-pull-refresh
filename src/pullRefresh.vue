@@ -138,7 +138,7 @@ export default {
         this.pullF.addEventListener("scroll", this.scroll);
       }
     },
-    pullUpLoadFinish() {
+    forceUpdate() {
       this.upllingUpState = 2;
       this.pullingUpStaus = true;
     },
@@ -287,19 +287,6 @@ export default {
         val.length > 0 && this.saveCache(val);
       }
     },
-    refreshing: function(nv, ov) {
-      if (!nv && ov) {
-        this.clientY = 0;
-        this.moveY = 0;
-        this.disabled = false;
-        this.arrowDeg = 0;
-        this.transition = "all 0.2s";
-      } else if (nv && !ov) {
-        this.moveY = this.getPullInfoHeight;
-        this.disabled = true;
-        this.arrowDeg = 180;
-      }
-    }
   },
   created() {
     if (this.useCache) {
