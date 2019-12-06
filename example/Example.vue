@@ -2,8 +2,8 @@
   <div class='box'>
     <pull-refresh :list.sync="list"
                   ref="scroll"
-                  v-on:refresh="onRefresh"
-                  @pullUpLoad="pullUpLoad">
+                  @refresh="onRefresh"
+                  @loadmore="pullUpLoad">
       <div class="list">
         <ul>
           <li v-for="(n, i) in list"
@@ -18,7 +18,6 @@
 // import pullRefresh from "v-pull-refresh";
 
 export default {
-  name: "Example",
   data() {
     return {
       list: [1, 2, 3, 4, 5]
@@ -36,8 +35,8 @@ export default {
       }, 1000);
     },
     pullUpLoad(i) {
-      console.log("加载pgaeIndex", i);
-      if (i >= 10) {
+      console.log("加载pageIndex", i);
+      if (i >= 4) {
         this.$refs.scroll && this.$refs.scroll.pullUpLoadFinish();
         return;
       }

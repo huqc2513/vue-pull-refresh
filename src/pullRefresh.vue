@@ -1,34 +1,28 @@
 <template>
-  <div class="pull-refresh"
-       ref="pullF">
-    <div class="pull-info"
-         :style="{ height: tipHeight }"
-         v-if="!refreshing">
-      <img src="./img/refresh_arrow.png"
-           :style="{ transform: `rotate(${arrowDeg}deg)`, transition: transition }" />
+  <div class="pull-refresh" ref="pullF">
+    <div class="pull-info" :style="{ height: tipHeight }" v-if="!refreshing">
+      <img
+        src="./img/refresh_arrow.png"
+        :style="{ transform: `rotate(${arrowDeg}deg)`, transition: transition }"
+      />
       <span>{{ tipText }}</span>
     </div>
-    <div class="pull-info"
-         :style="{ height: tipHeight }"
-         v-else>
-      <img v-if="state === 3"
-           src="./img/loading.gif" />
-      <img v-if="state === 4"
-           src="./img/succ.png" />
+    <div class="pull-info" :style="{ height: tipHeight }" v-else>
+      <img v-if="state === 3" src="./img/loading.gif" />
+      <img v-if="state === 4" src="./img/succ.png" />
       <span>{{ refreshTip }}</span>
     </div>
-    <div class="pull-con"
-         ref="pull"
-         @touchstart="touchstart"
-         @touchmove="touchmove"
-         @touchend="touchend"
-         :style="{ transform: `translateY(${moveY}px)`, transition: transition }">
+    <div
+      class="pull-con"
+      ref="pull"
+      @touchstart="touchstart"
+      @touchmove="touchmove"
+      @touchend="touchend"
+      :style="{ transform: `translateY(${moveY}px)`, transition: transition }"
+    >
       <slot></slot>
-      <div class="pullingUp-wrap"
-           v-if="pullingUp && showPullingUp">
-        <img v-if="!pullingUpStaus"
-             class="img"
-             src="./img/loading.gif" />
+      <div class="pullingUp-wrap" v-if="pullingUp && showPullingUp">
+        <img v-if="!pullingUpStaus" class="img" src="./img/loading.gif" />
         {{ pullingUpTipText }}
       </div>
     </div>
@@ -36,7 +30,6 @@
 </template>
 
 <script>
-
 const getVueCacheData = vue => {
   let cacheList = [
     "showPullingUp",
@@ -50,7 +43,6 @@ const getVueCacheData = vue => {
   });
   return obj;
 };
-
 
 export default {
   name: "pullRefresh",
@@ -105,7 +97,7 @@ export default {
       pullingUpText: "正在加载",
       pullingUpStaus: false,
       upllingUpState: 1
-    }
+    };
   },
   mounted() {
     this.setWrapHeight();
@@ -133,18 +125,16 @@ export default {
     this.pullF.removeEventListener("scroll", this.scroll);
   },
   methods: {
-    checkScrollheieght() {
-      if (
-        this.pullF.scrollHeight > this.pullF.clientHeight &&
-        this.pullF.scrollTop != 0
-      ) {
+    checkScrollHeight() {
+      this.pullF = this.$refs.pullF;
+      if (this.pullF.scrollHeight - this.pullF.clientHeight >= 10) {
         this.showPullingUp = true;
       }
     },
     initPullDown() {
       this.pullF = this.$refs.pullF;
       if (this.pullF) {
-        this.checkScrollheieght();
+        this.checkScrollHeight();
         this.pullF.addEventListener("scroll", this.scroll);
       }
     },
@@ -165,8 +155,7 @@ export default {
         }
         this.scrollLock = true;
         this.pageIndex += 1;
-
-        this.$emit("pullUpLoad", this.pageIndex);
+        this.$emit("loadmore", this.pageIndex);
       }
     },
     setWrapHeight() {
@@ -219,9 +208,7 @@ export default {
         this.refreshing = true;
         this.state = 3;
         this.transition = "all 0.2s";
-        console.log(this)
-        console.log('emit:'+this.$emit)
-        this.$emit("onRefresh");
+        this.$emit("refresh");
       } else {
         this.state = 1;
         this.moveY = 0;
@@ -284,15 +271,17 @@ export default {
   },
   watch: {
     list: function(val, oldval) {
-      if (this.pullingUp) {
-        this.scrollLock = false;
-        this.checkScrollheieght();
-      }
       if (this.pullingDown) {
         this.state = 4;
         setTimeout(() => {
           this.reset();
         }, 500);
+      }
+      if (this.pullingUp) {
+        this.scrollLock = false;
+        this.$nextTick(() => {
+          this.checkScrollHeight();
+        });
       }
       if (this.useCache) {
         val.length > 0 && this.saveCache(val);
@@ -317,8 +306,7 @@ export default {
       this.getCacheData();
     }
   }
-}
-
+};
 </script>
 
 <style lang='scss' scoped>
@@ -331,7 +319,6 @@ export default {
   overflow: hidden;
   overflow-y: scroll;
   .pull-con {
-    height: 100%;
     z-index: 99;
     position: absolute;
     width: 100%;
