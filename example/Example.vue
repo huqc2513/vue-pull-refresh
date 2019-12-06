@@ -1,13 +1,14 @@
 <template>
-  <div class='box'>
-    <pull-refresh :list.sync="list"
-                  ref="scroll"
-                  @refresh="onRefresh"
-                  @loadmore="pullUpLoad">
+  <div class="box">
+    <pull-refresh
+      :list.sync="list"
+      ref="scroll"
+      @refresh="onRefresh"
+      @loadmore="pullUpLoad"
+    >
       <div class="list">
         <ul>
-          <li v-for="(n, i) in list"
-              :key="i">{{ n }}</li>
+          <li v-for="(n, i) in list" :key="i">{{ n }}</li>
         </ul>
       </div>
     </pull-refresh>
@@ -51,7 +52,7 @@ export default {
     }
   },
   components: {
-  //  pullRefresh
+    //  pullRefresh
   }
 };
 </script>
@@ -68,10 +69,11 @@ export default {
     justify-content: center;
   }
 }
+
 .box {
-  height: 400px;
-  width: 300px;
+  width: 330px;
   margin: 0 auto;
-  border: 1px solid block;
+  height: 400px;
+  border: 1px solid black;
 }
 </style>

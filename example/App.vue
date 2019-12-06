@@ -1,18 +1,18 @@
 <template>
-  <div id='app'>
+  <div id="app">
     <Example />
   </div>
 </template>
 
 <script>
-import Example from './Example.vue'
+import Example from "./Example.vue";
 
 export default {
-    name: 'App',
-    components: {
-        Example
-    }
-}
+  name: "App",
+  components: {
+    Example
+  }
+};
 </script>
 
 <style  lang='scss'>
