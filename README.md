@@ -2,6 +2,12 @@
 
 基于 vue 封装的轻量级上下拉刷新组件
 
+## 实现功能
+
+- 上拉刷新
+- 下拉刷新
+- 缓存列表数据，缓存scrollTop高度
+
 ## 在线demo
 
 [点击查看,请使用浏览器手机模拟器模式](https://huqc.gitee.io/vue-pull/)
@@ -104,21 +110,28 @@
 
 | 属性       | 说明             | 类型    | 默认值         | 描述                                                                 |
 | ---------- | ---------------- | ------- | -------------- | -------------------------------------------------------------------- |
-| list       | `数组列表`         | array   |    []         |   `异步的数据列表，内部` |
-| pullTip    | `下拉时的提示文字` | string   | `下拉即可刷新` |
-| pullingUp  | `是否开启上拉刷新` | Boolean  |  true         |
-| pullingDown| `是否开启下拉刷新` | Boolean  |  true         |
-| refreshTip | `刷新中的提示文字` | string   |   `正在刷新`   |
-| usecache   | `是否开启缓存`     | Boolean  |     false    | `开启缓存后，会将list数据以及刷新状态，滚动条高度等进行缓存(待实现)` |
+| list       | 数组列表         | array   |    []         |   `异步的数据列表，内部` |
+| pullTip    | 下拉时的提示文字 | string   | `下拉即可刷新` |
+| pullingUp  | 是否开启上拉刷新 | Boolean  |  true         |
+| pullingDown| 是否开启下拉刷新 | Boolean  |  true         |
+| refreshTip | 刷新中的提示文字 | string   |   `正在刷新`   |
+| useCache   | 是否开启缓存     | Boolean  |     true    | `开启缓存后，会将list数据以及刷新状态，滚动条高度等进行缓存，使得列表组件滚动条高度保留` |
+
+
 
  
+>注意：开启useCache后，需要在使用时为list属性添加.sync修饰符，如上面例子中`:list.sync="list"`，这是为了组件内部更好的将缓存数据填充到父组件中 
+
+  
+
+
 
 ## emit-event
 
 | 事件方法   | 说明                       | 参数                 |
 | ---------- | -------------------------- | -------------------- |
-| refresh  | `下拉刷新成功后，触发此事件` | `无`                 |
-| loadmore | `上拉刷新成功后，触发此事件` | `pageIndex` (nubmer) |
+| refresh  | 下拉刷新成功后，触发此事件 | `无`                 |
+| loadmore | 上拉刷新成功后，触发此事件 | `pageIndex` (nubmer) |
 
 ## 实例事件
 

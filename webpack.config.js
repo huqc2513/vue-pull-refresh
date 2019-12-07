@@ -101,12 +101,12 @@ if (isdev) {
   config.devServer = {
     contentBase: path.join(__dirname, "dist/"),
     // hot: true,
+    host:'0.0.0.0',
     open: true,
     overlay: true,
     inline: true,
     contentBase: false,
     compress: true,
-    host: "localhost",
     port: 9999,
     open: true
   };

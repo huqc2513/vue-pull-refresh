@@ -37,7 +37,7 @@ export default {
     },
     loadmore(i) {
       console.log("加载pageIndex", i);
-      if (i >= 4) {
+      if (i >= 8) {
         this.$refs.scroll && this.$refs.scroll.forceUpdate();
         return;
       }

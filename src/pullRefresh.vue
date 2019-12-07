@@ -22,7 +22,7 @@
     >
       <slot></slot>
       <div class="pullingUp-wrap" v-if="pullingUp && showPullingUp">
-        <img v-if="!pullingUpStaus" class="img" src="./img/loading.gif" />
+        <img v-if="upllingUpState !== 2" class="img" src="./img/loading.gif" />
         {{ pullingUpTipText }}
       </div>
     </div>
@@ -30,20 +30,6 @@
 </template>
 
 <script>
-const getVueCacheData = vue => {
-  let cacheList = [
-    "showPullingUp",
-    "pullingUpStaus",
-    "upllingUpState",
-    "scrollLock"
-  ];
-  let obj = {};
-  cacheList.forEach(e => {
-    obj[e] = vue[e];
-  });
-  return obj;
-};
-
 export default {
   name: "pullRefresh",
   props: {
@@ -53,7 +39,7 @@ export default {
     },
     tipHeight: {
       type: String,
-      default: "50px"
+      default: "40px"
     },
 
     pullTip: {
@@ -78,7 +64,7 @@ export default {
     },
     useCache: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data() {
@@ -95,35 +81,24 @@ export default {
       showPullingUp: false,
       pageIndex: 0,
       pullingUpText: "正在加载",
-      pullingUpStaus: false,
       upllingUpState: 1
     };
+  },
+  created() {
+    if (this.useCache) {
+      this.mergeCacheData();
+    }
   },
   mounted() {
     this.setWrapHeight();
     if (this.pullingUp) {
-      this.initPullDown();
+      this.initPullUp();
+    }
+    if (this.useCache) {
+      this.setContainerScrollTop();
     }
   },
-  computed: {
-    tipText() {
-      let str = "下拉刷新";
-      if (this.state === 1) str = this.pullTip || "下拉刷新";
-      if (this.state === 2) str = this.refreshTip || "松开即可刷新";
-      if (this.state === 3) str = "刷新中";
-      if (this.state === 4) str = "刷新完成";
-      return str;
-    },
-    pullingUpTipText() {
-      let str = "";
-      if (this.upllingUpState === 1) str = this.refreshTip || "上拉刷新";
-      if (this.upllingUpState === 2) str = this.pullingUpFinishText;
-      return str;
-    }
-  },
-  beforeDestroy() {
-    this.pullF.removeEventListener("scroll", this.scroll);
-  },
+
   methods: {
     checkScrollHeight() {
       this.pullF = this.$refs.pullF;
@@ -131,7 +106,7 @@ export default {
         this.showPullingUp = true;
       }
     },
-    initPullDown() {
+    initPullUp() {
       this.pullF = this.$refs.pullF;
       if (this.pullF) {
         this.checkScrollHeight();
@@ -140,13 +115,14 @@ export default {
     },
     forceUpdate() {
       this.upllingUpState = 2;
-      this.pullingUpStaus = true;
+      this.saveCache(this.list);
     },
     scroll(e) {
-      if (this.pullingUpStaus) {
-        return;
+      let scrollTop = this.pullF.scrollTop || 0;
+      if (scrollTop) {
+        localStorage.setItem("vpullScrollTop", scrollTop);
       }
-      let scrollTop = this.pullF.scrollTop;
+
       let scrollH = this.pullF.scrollHeight;
       let clientH = this.pullF.clientHeight;
       if (clientH + scrollTop >= scrollH - 10 && scrollTop != 0) {
@@ -224,48 +200,64 @@ export default {
       this.transition = "all 0.2s";
       this.state = 1;
     },
+    getOldScrollTop() {
+      let scrollTop = localStorage.getItem("vpullScrollTop") || 0;
+      return scrollTop;
+    },
+    // 获取额外需要缓存的数据
+    getNeedToCacheExtData(extObj = {}) {
+      let cacheList = ["showPullingUp", "upllingUpState", "scrollLock"];
+      let obj = {};
+      cacheList.forEach(prop => {
+        obj[prop] = this[prop];
+      });
+      Object.assign(obj, extObj);
+
+      return obj;
+    },
     // 写入缓存
-    saveCache(data) {
+    saveCache(list = [], extData = {}) {
       let index = this.pageindex || 1;
 
-      let oldData = localStorage.getItem("vpullData");
-      oldData = JSON.parse(oldData);
-
-      let { scrollTop } = oldData;
-      scrollTop = scrollTop || this.$refs.pullF.scrollTop || 0;
-
-      let that = this;
       try {
         let obj = {
-          list: data,
+          list,
+          listLenth: list.length,
           pageIndex: index,
-          scrollTop: scrollTop,
           ext: {
-            ...getVueCacheData(that)
+            ...this.getNeedToCacheExtData(extData)
           }
         };
+        console.log("obj", obj);
         obj = JSON.stringify(obj);
         localStorage.setItem("vpullData", obj);
+        localStorage.setItem("vpullScrollTop", this.getOldScrollTop());
       } catch (e) {
         console.log("写入缓存出错", e);
       }
     },
-    getCacheData() {
+    mergeCacheData() {
       let data = localStorage.getItem("vpullData");
       if (data) {
         try {
           data = JSON.parse(data);
-          let { list, pageIndex, scrollTop, ext } = data;
+          let { list, pageIndex, ext } = data;
           this.$emit("update:list", list);
-          this.pageIndex = pageIndex;
-          Object.assign(this, ext);
-          this.$nextTick(() => {
-            this.$refs.pullF.scrollTop = scrollTop + "px";
-            console.log(this.$refs.pullF, scrollTop);
+          Object.assign(this, ext, {
+            pageIndex
           });
         } catch (e) {
           console.log("读取缓存出错", e);
         }
+      }
+    },
+    setContainerScrollTop(scrollTop) {
+      scrollTop = scrollTop || localStorage.getItem("vpullScrollTop");
+      if (scrollTop) {
+        this.$nextTick(() => {
+            // this.$refs.pullF.scrollTop = `200px`
+            this.$refs.pullF.scroll(0,scrollTop)
+        });
       }
     }
   },
@@ -278,33 +270,53 @@ export default {
         }, 500);
       }
       if (this.pullingUp) {
-        this.scrollLock = false;
+        this.scrollLock = this.upllingUpState === 2 ? true : false;
         this.$nextTick(() => {
           this.checkScrollHeight();
         });
       }
       if (this.useCache) {
-        val.length > 0 && this.saveCache(val);
+        
+        this.saveCache(val,{
+          upllingUpState:1, //重置上拉刷新的状态为待开始，为了解决组件数据被缓存后，外部接口数据更新了
+          scrollLock:false  //请求ajax锁重置
+        });
+        
       }
-    },
-  },
-  created() {
-    if (this.useCache) {
-      this.getCacheData();
     }
+  },
+
+  computed: {
+    tipText() {
+      let str = "下拉刷新";
+      if (this.state === 1) str = this.pullTip || "下拉刷新";
+      if (this.state === 2) str = this.refreshTip || "松开即可刷新";
+      if (this.state === 3) str = "刷新中";
+      if (this.state === 4) str = "刷新完成";
+      return str;
+    },
+    pullingUpTipText() {
+      let str = "";
+      if (this.upllingUpState === 1) str = this.refreshTip || "上拉刷新";
+      if (this.upllingUpState === 2) str = this.pullingUpFinishText;
+      return str;
+    }
+  },
+  beforeDestroy() {
+    this.pullF.removeEventListener("scroll", this.scroll);
   }
 };
 </script>
 
 <style lang='scss' scoped>
 .pull-refresh::-webkit-scrollbar {
-  display: none;
+  /* display: none; */
 }
 .pull-refresh {
   position: relative;
   width: 100%;
   overflow: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   .pull-con {
     z-index: 99;
     position: absolute;
@@ -321,6 +333,7 @@ export default {
   align-items: center;
   position: absolute;
   top: 0;
+  font-size:12px;
   z-index: 1;
   img {
     width: 20px;
@@ -339,6 +352,8 @@ export default {
   align-items: center;
   height: 30px;
   background: #fff;
+  font-size:12px;
+  color: #333;
 }
 .pullingUp-wrap .img {
   width: 25px;
