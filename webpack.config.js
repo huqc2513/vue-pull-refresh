@@ -83,7 +83,10 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       inject: "body",
-      env: isdev,
+      isDev: isdev,
+      minify: {
+        removeComments: true, // 移除HTML中的注释
+      },
       template: path.resolve(__dirname, "./example/index.html")
     })
     // new webpack.optimize.UglifyJsPlugin({
@@ -110,6 +113,12 @@ if (isdev) {
     port: 9999,
     open: true
   };
+}else{
+
+  config.optimization = {
+    minimizer: [new uglify()]
+  }
+
 }
 
 module.exports = config;

@@ -281,7 +281,7 @@ export default {
           upllingUpState:1, //重置上拉刷新的状态为待开始，为了解决组件数据被缓存后，外部接口数据更新了
           scrollLock:false  //请求ajax锁重置
         });
-        
+
       }
     }
   },
